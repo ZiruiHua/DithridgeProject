@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: core
+spec:
+  selector:
+    app: core
+  ports:
+  - protocol: TCP
+    port: 8080
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core
+spec:
+  selector:
+      matchLabels:
+        app: core
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: core
+    spec:
+      containers:
+        - name: core
+          image: coreservice:v0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
